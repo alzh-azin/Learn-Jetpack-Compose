@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Learn Jetpack Compose</string>
+    <string name="label_name">Azin Alizadeh</string>
+    <string name="label_description">Android Developer Extraordinaire</string>
+    <string name="label_phne">0910183912</string>
+    <string name="label_email">alzh.azin@gmail.com</string>
+    <string name="label_username">AndroidDev</string>
 </resources>
