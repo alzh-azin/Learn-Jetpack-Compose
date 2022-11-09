@@ -30,12 +30,11 @@ All of the container's children will follow this same alignment pattern. You can
 
 For a `Row`, you can choose the following arrangements:
 
-![](readme%20resources\1.PNG)
 [<img src="readme%20resources\1.PNG"/>](readme%20resources\1.PNG)
 
 And for a `Column`:
 
-![](readme%20resources\2.PNG)
+[<img src="readme%20resources\2.PNG"/>](readme%20resources\2.PNG)
 
 In addition to these arrangements, you can also use the `Arrangement.spacedBy()` method to add a fixed space in between each child composable.2
 
