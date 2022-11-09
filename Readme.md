@@ -31,6 +31,7 @@ All of the container's children will follow this same alignment pattern. You can
 For a `Row`, you can choose the following arrangements:
 
 ![](readme%20resources\1.PNG)
+[<img src="readme%20resources\1.PNG"/>](readme%20resources\1.PNG)
 
 And for a `Column`:
 
