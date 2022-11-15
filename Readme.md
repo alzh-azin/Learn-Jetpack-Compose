@@ -11,10 +11,12 @@ Primary is your main brand color and secondary is used to provide accents.
 Material also defines "on" colors—colors to use for content on top of one of the named colors e.g. text in a ‘surface' colored container should be colored ‘on surface'
 
 [<img src="1.PNG"/>](1.PNG)
+[<img src="resources\1.PNG"/>](resources\1.PNG)
 
 ##### Typography
 
 [<img src="2.PNG"/>](2.PNG)
+[<img src="resources\2.PNG"/>](resources\2.PNG)
 
 The Material [type scale generator tool](https://material.io/design/typography/the-type-system.html#type-scale) can help you to build your type scale.
 
