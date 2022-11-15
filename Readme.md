@@ -10,13 +10,11 @@ Primary is your main brand color and secondary is used to provide accents.
 
 Material also defines "on" colors—colors to use for content on top of one of the named colors e.g. text in a ‘surface' colored container should be colored ‘on surface'
 
-[<img src="1.PNG"/>](1.PNG)
-[<img src="resources\1.PNG"/>](resources\1.PNG)
+[<img src="resource\1.PNG"/>](resource\1.PNG)
 
 ##### Typography
 
-[<img src="2.PNG"/>](2.PNG)
-[<img src="resources\2.PNG"/>](resources\2.PNG)
+[<img src="resource\2.PNG"/>](resource\2.PNG)
 
 The Material [type scale generator tool](https://material.io/design/typography/the-type-system.html#type-scale) can help you to build your type scale.
 
@@ -40,7 +38,7 @@ data class TextStyle(
 
 ##### Shape
 
-[<img src="resources\3.PNG"/>](resources\3.PNG)
+[<img src="resource\3.PNG"/>](resource\3.PNG)
 
 Customizing your shape theme will be reflected across numerous components e.g. [Buttons](https://material.io/components/buttons) & [Text Fields](https://material.io/components/text-fields) use the small shape theme, [Cards](https://material.io/components/cards) and [Dialogs](https://material.io/components/dialogs) use medium and [Sheets](https://material.io/components/sheets-bottom) use the large shape theme by default. There is a complete mapping of components to shape themes [here](https://material.io/design/shape/applying-shape-to-ui.html#shape-scheme). The Material [shape customization tool](https://material.io/design/shape/about-shape.html#shape-customization-tool) can help you generate a shape theme.
 
