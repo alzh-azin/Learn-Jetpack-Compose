@@ -11,7 +11,6 @@ Primary is your main brand color and secondary is used to provide accents.
 Material also defines "on" colors—colors to use for content on top of one of the named colors e.g. text in a ‘surface' colored container should be colored ‘on surface'
 
 [<img src="resource\1.PNG"/>](resource\1.PNG)
-[<img src="resource\1.PNG"/>](resource\1.PNG)
 
 ##### Typography
 
