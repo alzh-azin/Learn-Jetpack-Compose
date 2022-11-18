@@ -60,3 +60,145 @@ While `remember` helps you retain state across recompositions, it's **not ret
 > Use **`rememberSaveable`** to restore your UI state after an Activity or process is recreated. Besides retaining state across recompositions, **`rememberSaveable`** also retains state across Activity and process recreation.
 
 Consider whether to use `remember` or `rememberSaveable` depending on your app's state and UX needs.
+
+### State Hoisting
+
+A composable that uses **`remember`** to store an object contains internal state, making the composable **stateful**. This is useful in situations where a caller doesn't need to control the state and can use it without having to manage the state themselves. However, **composables with internal state tend to be less reusable and harder to test**.
+
+**Composables that don't hold any state are called stateless composables**. An easy way to create a **stateless** composable is by using state hoisting.
+
+State hoisting in Compose is a pattern of moving state to a composable's caller to make a composable stateless. The general pattern for state hoisting in Jetpack Compose is to replace the state variable with two parameters:
+
+- **value: T** - the current value to display
+- **onValueChange: (T) -> Unit** - an event that requests the value to change, where T is the proposed new value
+
+> The pattern where the state goes down, and events go up is called Unidirectional Data Flow (UDF), and state hoisting is how we implement this architecture in Compose. You can learn more about this in the [Compose Architecture documentation](https://developer.android.com/jetpack/compose/architecture#udf-compose).
+
+State that is hoisted this way has some important properties:
+
+- **Single source of truth**: By moving state instead of duplicating it, we're ensuring there's only one source of truth. This helps avoid bugs.
+- **Shareable**: Hoisted state can be shared with multiple composables.
+- **Interceptable**: Callers to the stateless composables can decide to ignore or modify events before changing the state.
+- **Decoupled**: The state for a stateless composable function can be stored anywhere. For example, in a ViewModel.
+
+> **Key Point:** When hoisting state, there are three rules to help you figure out where state should go:
+> 
+> 1. State should be hoisted to at *least* the **lowest common parent** of all composables that use the state (read).
+> 2. State should be hoisted to at *least* the **highest level it may be changed** (write).
+> 3. If **two states change in response to the same events** they should be **hoisted to the same level.**
+> 
+> You can hoist the state higher than these rules require, but if you don't hoist the state high enough, it might be difficult or impossible to follow unidirectional data flow.
+
+As mentioned, state hoisting has some benefits.
+
+1. **Your stateless composable can now be reused**. Take for instance the following example.
+
+To count glasses of water and of juice you remember the `waterCount` and the `juiceCount`, but use the sample `StatelessCounter` composable function to display two different independent states.
+
+```kotlin
+@Composable
+fun StatefulCounter() {
+    var waterCount by remember { mutableStateOf(0) }
+
+    var juiceCount by remember { mutableStateOf(0) }
+
+    StatelessCounter(waterCount, { waterCount++ })
+    StatelessCounter(juiceCount, { juiceCount++ })
+}
+```
+
+If `juiceCount` is modified then `StatefulCounter` is recomposed. During recomposition, Compose identifies which functions read `juiceCount` and triggers recomposition of only those functions.
+
+When the user taps to increment `juiceCount`, `StatefulCounter` recomposes, and so does the `StatelessCounter` that reads `juiceCount`. But the `StatelessCounter` that reads `waterCount` is not recomposed.
+
+2. **Your stateful composable function can provide the same state to multiple composable functions**.
+
+```kotlin
+@Composable
+fun StatefulCounter() {
+   var count by remember { mutableStateOf(0) }
+
+   StatelessCounter(count, { count++ })
+   AnotherStatelessMethod(count, { count *= 2 })
+}
+```
+
+      In this case, if the count is updated by either `StatelessCounter` or `AnotherStatelessMethod`, everything is recomposed, which is expected.
+
+Because hoisted state can be shared, be sure to **pass only the state that the composables need** to avoid unnecessary recompositions, and to increase reusability.
+
+> **Key Point:** A best practice for the design of Composables is to pass them only the parameters they need.
+
+### Observable Mutable List
+
+Using mutable objects for this, such as `ArrayList<T>` or `mutableListOf,` won't work. These types won't notify Compose that the items in the list have changed and schedule a recomposition of the UI. You need a different API.
+
+You need to create an instance of `MutableList` that is observable by Compose. This structure lets Compose track changes to recompose the UI when items are added or removed from the list.
+
+Start by defining our observable `MutableList`. The extension function [`toMutableStateList()`](https://developer.android.com/reference/kotlin/androidx/compose/runtime/package-summary#(kotlin.collections.Collection).toMutableStateList()) is the way to create an observable `MutableList` from an initial mutable or immutable `Collection`, such as `List`.
+
+Alternatively, you could also use the factory method [`mutableStateListOf`](https://developer.android.com/reference/kotlin/androidx/compose/runtime/package-summary#mutableStateListOf()) to create the observable `MutableList` and then add the elements for your initial state.
+
+> **Warning**: You can use the `mutableStateListOf` API instead to create the list. However, the way you use it might result in unexpected recomposition and suboptimal UI performance.
+> 
+> If you just define the list and then add the tasks in a different operation it would result in duplicated items being added for **every** recomposition.
+> 
+> `// Don't do this!`
+> 
+> `val list = remember { mutableStateListOf<WellnessTask>()` `}`
+> 
+> `list.addAll(getWellnessTasks())`
+> 
+> Instead, create the list with its initial value in a single operation and then pass it to the `remember` function, like this:
+> 
+> `// Do this instead. Don't need to copy`
+> 
+> `val list = remember {`
+> 
+> `mutableStateListOf<WellnessTask>().apply {` `addAll(getWellnessTasks()) }`
+> 
+> `}`
+
+There's one more change you need to make. The `items` method receives a `key` parameter. By default, each item's state is keyed against the position of the item in the list.
+
+In a mutable list, this causes issues when the data set changes, since items that change position effectively lose any remembered state.
+
+You can easily fix this by using the `id` of each `WellnessTaskItem` as the key for each item.
+
+By providing keys, you help Compose to handle reorderings correctly. For example, if your item contains remembered state, setting keys would allow Compose to move this state together with the item, when its position changes.
+
+```kotlin
+@Composable
+fun WellnessTasksList(
+   list: List<WellnessTask>,
+   onCloseTask: (WellnessTask) -> Unit,
+   modifier: Modifier = Modifier
+) {
+   LazyColumn(modifier = modifier) {
+       items(
+           items = list,
+           key = { task -> task.id }
+       ) { task ->
+           WellnessTaskItem(taskName = task.label, onClose = { onCloseTask(task) })
+       }
+   }
+}
+```
+
+If you try to use `rememberSaveable()` to store the list in `WellnessScreen`, you'll get a runtime exception:
+
+> cannot be saved using the current SaveableStateRegistry. The default implementation only supports types which can be stored inside the Bundle. Please consider implementing a custom Saver for this class and pass it to rememberSaveable().
+
+This error tells you that you need to provide a [custom saver](https://developer.android.com/jetpack/compose/state#restore-ui-state). However, you shouldn't be using **`rememberSaveable`** to store large amounts of data or complex data structures that require lengthy serialization or deserialization.
+
+### State in ViewModel
+
+The screen, or UI state, indicates what should display on the screen (for example, the list of tasks). **This state is usually connected with other layers of the hierarchy because it contains application data**.
+
+While the UI state describes what to show on the screen, the logic of an app describes how the app behaves and should react to state changes. There are two types of logic: the UI behavior or UI logic, and the business logic.
+
+- The UI logic relates to *how to display* state changes on the screen (for example, the navigation logic or showing snackbars).
+- The business logic is *what to do* with state changes (for example making a payment or storing user preferences). This logic is usually placed in the business or data layers, never in the UI layer.
+
+`viewModel()` returns an existing `ViewModel` or creates a new one in the given scope. The ViewModel instance is retained as long as the scope is alive. For example, if the composable is used in an activity, `viewModel()` returns the same instance until the activity is finished or the process is killed.
+
