@@ -10,7 +10,7 @@ Primary is your main brand color and secondary is used to provide accents.
 
 Material also defines "on" colors—colors to use for content on top of one of the named colors e.g. text in a ‘surface' colored container should be colored ‘on surface'
 
-[<img src="https://raw.githubusercontent.com/alzh-azin/Learn-Jetpack-Compose/12-state_in_jetpack_compose/resources/1.PNG"/>](https://raw.githubusercontent.com/alzh-azin/Learn-Jetpack-Compose/12-state_in_jetpack_compose/resources/1.PNG)
+[<img src="https://github.com/alzh-azin/Learn-Jetpack-Compose/blob/13-compose_theming/resource/1.png"/>](https://github.com/alzh-azin/Learn-Jetpack-Compose/blob/13-compose_theming/resource/1.png)
 
 ##### Typography
 
