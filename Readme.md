@@ -14,7 +14,7 @@ Material also defines "on" colors—colors to use for content on top of one of t
 
 ##### Typography
 
-[<img src="[resource\2.PNG](https://raw.githubusercontent.com/alzh-azin/Learn-Jetpack-Compose/13-compose_theming/resource/2.png)"/>]([resource\2.PNG](https://raw.githubusercontent.com/alzh-azin/Learn-Jetpack-Compose/13-compose_theming/resource/2.png))
+[<img src="[resource\2.PNG](https://raw.githubusercontent.com/alzh-azin/Learn-Jetpack-Compose/13-compose_theming/resource/2.png)"/>](https://raw.githubusercontent.com/alzh-azin/Learn-Jetpack-Compose/13-compose_theming/resource/2.png)
 
 The Material [type scale generator tool](https://material.io/design/typography/the-type-system.html#type-scale) can help you to build your type scale.
 
@@ -38,7 +38,7 @@ data class TextStyle(
 
 ##### Shape
 
-[<img src="[resource\3.PNG](https://raw.githubusercontent.com/alzh-azin/Learn-Jetpack-Compose/13-compose_theming/resource/3.png)"/>]([resource\3.PNG](https://raw.githubusercontent.com/alzh-azin/Learn-Jetpack-Compose/13-compose_theming/resource/3.png))
+[<img src="[resource\3.PNG](https://raw.githubusercontent.com/alzh-azin/Learn-Jetpack-Compose/13-compose_theming/resource/3.png)"/>]([resource\3.PNG](https://raw.githubusercontent.com/alzh-azin/Learn-Jetpack-Compose/13-compose_theming/resource/3.png)
 
 Customizing your shape theme will be reflected across numerous components e.g. [Buttons](https://material.io/components/buttons) & [Text Fields](https://material.io/components/text-fields) use the small shape theme, [Cards](https://material.io/components/cards) and [Dialogs](https://material.io/components/dialogs) use medium and [Sheets](https://material.io/components/sheets-bottom) use the large shape theme by default. There is a complete mapping of components to shape themes [here](https://material.io/design/shape/applying-shape-to-ui.html#shape-scheme). The Material [shape customization tool](https://material.io/design/shape/about-shape.html#shape-customization-tool) can help you generate a shape theme.
 
