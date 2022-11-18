@@ -14,7 +14,7 @@ Material also defines "on" colors—colors to use for content on top of one of t
 
 ##### Typography
 
-[<img src="resource\2.PNG"/>](resource\2.PNG)
+[<img src="[resource\2.PNG](https://raw.githubusercontent.com/alzh-azin/Learn-Jetpack-Compose/13-compose_theming/resource/2.png)"/>]([resource\2.PNG](https://raw.githubusercontent.com/alzh-azin/Learn-Jetpack-Compose/13-compose_theming/resource/2.png))
 
 The Material [type scale generator tool](https://material.io/design/typography/the-type-system.html#type-scale) can help you to build your type scale.
 
